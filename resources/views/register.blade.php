@@ -4,36 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: lightblue;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        .btn{
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        a{
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
 </head>
 <body>
-   <div class="container mt-5">
-        <div class="row justify-content-center">
-           <div class="col-md-5 col-lg-4">
-                <h2 class="card-title text-center mb-4">register</h2>
-                <form action="{{route('register')}}" method="POST" onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').innerText='Registering...';">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="username" class="form-label">username:</label>
-                        <input type="text" name="name" id="name" class="form-control" required>
-                    </div>
+   <div class="container">
+        <h1>Register</h1>
+        <form action="{{route('register')}}" method="POST" onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').innerText='Registering...';">
+            @csrf
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="name" required>
+            </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">password:</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                    </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+            </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary mt-4 mb-4 text-center">register</button>
-                        
-                    </div>
+            <div>
+                <button type="submit" class="btn">Register</button>
+            </div>
 
-                    <div>
-                        <a href="{{route('login')}}" class="text-center">back</a>
-                    </div>
-                </form>
-           </div>
-        </div>
+            <div>
+                <a href="{{route('login')}}">Back</a>
+            </div>
+        </form>
     </div>
 </body>
 </html>

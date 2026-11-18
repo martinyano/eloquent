@@ -39,8 +39,16 @@ class EloquentRelationshipController extends Controller
         ]);
 
         DB::transaction(function () use ($data) {
-            $user = User::create(['name' => $data['oto_name']]);
-            $user->house()->create(['address' => $data['oto_address']]);
+            $userName = trim($data['oto_name']);
+            
+            // USE firstOrCreate INSTEAD OF create TO PREVENT DUPLICATES
+            $user = User::firstOrCreate(['name' => $userName]);
+            
+            // If the user already had a house, this handles or updates it safely
+            $user->house()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['address' => $data['oto_address']]
+            );
         });
 
         return back()->with('status', 'User and house added.');
@@ -57,18 +65,19 @@ class EloquentRelationshipController extends Controller
             'otm_address' => ['required', 'string', 'max:255'],
         ]);
 
-        // Clean up input spaces
         $userName = trim($data['otm_name']);
+        $houseAddress = trim($data['otm_address']);
 
-        // Find existing user case-insensitively, or create if they truly don't exist
+        // Find or create the user safely
         $user = User::where('name', 'LIKE', $userName)->first();
-
         if (!$user) {
             $user = User::create(['name' => $userName]);
         }
 
-        // Attach the house to the correct user
-        $user->houses()->create(['address' => $data['otm_address']]);
+        // PREVENT DUPLICATES: firstOrCreate checks if this house already belongs to this user
+        $user->houses()->firstOrCreate([
+            'address' => $houseAddress
+        ]);
 
         return back()->with('status', 'House added.');
     }

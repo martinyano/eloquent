@@ -23,6 +23,7 @@ Route::get('/eloquent-relationships', [EloquentRelationshipController::class, 'i
 
 Route::prefix('eloquent-relationships')->name('eloquent.')->group(function () {
     Route::post('/one-to-one', [EloquentRelationshipController::class, 'storeOneToOne'])->name('one-to-one.store');
-    Route::post('/one-to-many', [EloquentRelationshipController::class, 'storeOneToMany'])->name('one-to-many.store');
+    Route::post('/one-to-many', [EloquentRelationshipController::class, 'storeOneToMany'])->name('one-to-many.store')
+    ->middleware('throttle:3,1');
     Route::post('/many-to-many', [EloquentRelationshipController::class, 'storeManyToMany'])->name('many-to-many.store');
 });

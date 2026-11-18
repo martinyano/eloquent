@@ -85,7 +85,14 @@ class LoginController extends Controller
     // Logout
     public function logout(Request $request)
     {
+        // 1. Flush all session data
         $request->session()->flush();
+
+        // 2. Invalidate the session and regenerate the CSRF token (Crucial for security)
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // 3. Redirect to login with no-cache headers
         return redirect()->route('login');
     }
 }
